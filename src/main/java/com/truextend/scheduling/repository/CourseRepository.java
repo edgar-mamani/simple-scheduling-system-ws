@@ -1,5 +1,9 @@
 package com.truextend.scheduling.repository;
 
-public interface CourseRepository {
+import org.springframework.data.repository.CrudRepository;
+
+import com.truextend.scheduling.entity.Course;
+
+public interface CourseRepository extends CrudRepository<Course, String> {
 
 }
