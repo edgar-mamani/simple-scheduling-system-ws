@@ -1,0 +1,25 @@
+version: '3'
+services:
+  scheduling-system-ws:
+    image: scheduling-system-ws
+    build: .
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - scheduling-system-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://scheduling-system-db:5438/SCHEDULING_SYSTEM_DB
+      - SPRING_DATASOURCE_USERNAME=truextend
+      - SPRING_DATASOURCE_PASSWORD=truextend
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+  scheduling-system-db:
+    image: postgres:14.2-alpine3.15
+    container_name: scheduling-system-db
+    restart: always
+    ports:
+     - "5438:5432"
+    environment:
+     - POSTGRES_DB=SCHEDULING_SYSTEM_DB     
+     - POSTGRES_USER=truextend
+     - POSTGRES_PASSWORD=truextend
