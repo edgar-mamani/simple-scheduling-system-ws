@@ -1,0 +1,265 @@
+{
+	"info": {
+		"_postman_id": "72b31e6f-6a32-4ad8-ab01-6f3be05e02db",
+		"name": "scheduling-system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetClasses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/scheduling-system/api/v1/classes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"scheduling-system",
+						"api",
+						"v1",
+						"classes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStudents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/scheduling-system/api/v1/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"scheduling-system",
+						"api",
+						"v1",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateCourse",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"code\": \"CS-100\",\n    \"title\": \"Machine Learning\",\n    \"description\": \"Introduction to Machine Learning: Simple perceptron, Backpropagation\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/scheduling-system/api/v1/classes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"scheduling-system",
+						"api",
+						"v1",
+						"classes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateStudent",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Edgar Miguel\",\n    \"lastName\": \"Mamani Condori\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/scheduling-system/api/v1/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"scheduling-system",
+						"api",
+						"v1",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enroll",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"studentId\": 1,\n    \"courseCode\": \"CS-100\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/scheduling-system/api/v1/enrollments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"scheduling-system",
+						"api",
+						"v1",
+						"enrollments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStudentById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/scheduling-system/api/v1/students/12",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"scheduling-system",
+						"api",
+						"v1",
+						"students",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetClassByCode",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/scheduling-system/api/v1/classes/CS-1003",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"scheduling-system",
+						"api",
+						"v1",
+						"classes",
+						"CS-1003"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStudentsByCourseCode",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/scheduling-system/api/v1/students/courses/CS-100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"scheduling-system",
+						"api",
+						"v1",
+						"students",
+						"courses",
+						"CS-100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetClassesByStudentId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/scheduling-system/api/v1/classes/students/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"scheduling-system",
+						"api",
+						"v1",
+						"classes",
+						"students",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CheckAvailability",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/scheduling-system/api/v1/students/1/classes/CS-102",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"scheduling-system",
+						"api",
+						"v1",
+						"students",
+						"1",
+						"classes",
+						"CS-102"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
