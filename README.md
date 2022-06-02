@@ -12,7 +12,11 @@
 
 - It is not required to create tables manually, flyway do it
 
-# Docker-compose command to START services is:
+# Generate Jar with this command:
+
+- mvn clean install
+
+# Docker-compose command to START services are:
 
 - docker-compose build SchedulingSystemWS
 
