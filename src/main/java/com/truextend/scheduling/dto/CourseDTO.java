@@ -2,23 +2,23 @@ package com.truextend.scheduling.dto;
 
 import java.util.Objects;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 
 @ApiModel(value = "Course")
 public class CourseDTO {
 	@NotEmpty(message = "Please provide a code")
-	@Max(value = 20, message = "Length maximum allow is 20 characters")
+	@Size(max = 20, message = "Length maximum allow is 20 characters")
 	private String code;
 	
 	@NotEmpty(message = "Please provide a title")
-	@Max(value = 50, message = "Length maximum allow is 50 characters")
+	@Size(max = 50, message = "Length maximum allow is 50 characters")
 	private String title;
 	
 	@NotEmpty(message = "Please provide a description")
-	@Max(value = 255, message = "Length maximum allow is 255 characters")
+	@Size(max = 255, message = "Length maximum allow is 255 characters")
 	private String description;
 
 	public String getCode() {

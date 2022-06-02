@@ -2,19 +2,19 @@ package com.truextend.scheduling.dto;
 
 import java.util.Objects;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class StudentDTO {
 	
 	private Integer id;
 	
 	@NotEmpty(message = "Please provide a first name")
-	@Max(value = 100, message = "Length maximum allow is 100 characters")
+	@Size(max = 100, message = "Length maximum allow is 100 characters")
 	private String firstName;
 	
 	@NotEmpty(message = "Please provide a last name")
-	@Max(value = 100, message = "Length maximum allow is 100 characters")
+	@Size(max = 100, message = "Length maximum allow is 100 characters")
 	private String lastName;
 	
 	public Integer getId() {
