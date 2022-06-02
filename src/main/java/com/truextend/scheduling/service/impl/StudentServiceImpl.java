@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.truextend.scheduling.dto.AvailabilityInfo;
 import com.truextend.scheduling.entity.Enrollment;
 import com.truextend.scheduling.entity.Student;
+import com.truextend.scheduling.exception.EntityNotFoundException;
 import com.truextend.scheduling.repository.EnrollmentRepository;
 import com.truextend.scheduling.repository.StudentRepository;
 import com.truextend.scheduling.service.StudentService;
@@ -33,18 +34,24 @@ public class StudentServiceImpl implements StudentService {
 	@Cacheable(value = "students", key = "#studentId")
 	@Override
 	public Student getStudentById(Integer studentId) {
-		return studentRepository.findById(studentId).orElse(null);
+		Optional<Student> optStudent = studentRepository.findById(studentId);
+		
+		if (!optStudent.isPresent()) throw new EntityNotFoundException(Student.class, "studentId", studentId.toString());
+		
+		return optStudent.get();
 	}
 
 	@CachePut(value = "students", key = "#student.id")
 	@Override
 	public void updateStudent(Student student) {
+		getStudentById(student.getId());
 		studentRepository.save(student);
 	}
 
 	@CacheEvict(value = "students", key = "#studentId")
 	@Override
 	public void deleteStudent(Integer studentId) {
+		getStudentById(studentId);
 		studentRepository.deleteById(studentId);
 	}
 

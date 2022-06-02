@@ -1,6 +1,7 @@
 package com.truextend.scheduling.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -9,6 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.truextend.scheduling.entity.Course;
+import com.truextend.scheduling.exception.EntityNotFoundException;
 import com.truextend.scheduling.repository.CourseRepository;
 import com.truextend.scheduling.service.CourseService;
 
@@ -26,18 +28,26 @@ public class CourseServiceImpl implements CourseService {
 	@Cacheable(value = "courses", key = "#courseCode")
 	@Override
 	public Course getCourseByCode(String courseCode) {
-		return courseRepository.findById(courseCode).orElse(null);
+		Optional<Course> optCourse = courseRepository.findById(courseCode);
+		
+		if (!optCourse.isPresent()) throw new EntityNotFoundException(Course.class, "classCode", courseCode);
+		
+		return optCourse.get();
 	}
 
 	@CachePut(value = "courses", key = "#course.code")
 	@Override
 	public void updateCourse(Course course) {
+		getCourseByCode(course.getCode());
+		
 		courseRepository.save(course);
 	}
 
 	@CacheEvict(value = "courses", key = "#courseCode")
 	@Override
 	public void deleteCourse(String courseCode) {
+		getCourseByCode(courseCode);
+		
 		courseRepository.deleteById(courseCode);
 	}
 	
