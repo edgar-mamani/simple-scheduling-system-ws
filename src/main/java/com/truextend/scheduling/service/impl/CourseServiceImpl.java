@@ -1,5 +1,7 @@
 package com.truextend.scheduling.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -44,4 +46,8 @@ public class CourseServiceImpl implements CourseService {
 		return courseRepository.findAll();
 	}
 
+	@Override
+	public List<Course> getCoursesByStudentId(Integer studentId) {
+		return courseRepository.findCoursesByStudentId(studentId);
+	}
 }

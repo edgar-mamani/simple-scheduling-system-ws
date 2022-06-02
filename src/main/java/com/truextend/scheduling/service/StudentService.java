@@ -1,5 +1,7 @@
 package com.truextend.scheduling.service;
 
+import java.util.List;
+
 import com.truextend.scheduling.entity.Student;
 
 public interface StudentService {
@@ -13,5 +15,7 @@ public interface StudentService {
 	void deleteStudent(Integer studentId);
 
 	Iterable<Student> getAllStudents();
+
+	List<Student> getStudentsByCourse(String courseCode);
 
 }

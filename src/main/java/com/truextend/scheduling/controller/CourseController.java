@@ -1,5 +1,7 @@
 package com.truextend.scheduling.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,4 +54,8 @@ public class CourseController {
 		courseService.deleteCourse(courseCode);
 	}
 	
+	@GetMapping("/students/{studentId}")
+	public List<Course> getStudentsByCourse(@PathVariable Integer studentId) {
+		return courseService.getCoursesByStudentId(studentId);
+	}
 }
