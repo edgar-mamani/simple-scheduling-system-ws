@@ -2,6 +2,8 @@ package com.truextend.scheduling.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.truextend.scheduling.dto.AvailabilityInfo;
-import com.truextend.scheduling.entity.Student;
+import com.truextend.scheduling.dto.AvailabilityInfoDTO;
+import com.truextend.scheduling.dto.StudentDTO;
 import com.truextend.scheduling.service.StudentService;
 
 @RestController
@@ -31,23 +33,23 @@ public class StudentController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Student createStudent(@RequestBody Student student) {
-		return studentService.createStudent(student);
+	public StudentDTO createStudent(@Valid @RequestBody StudentDTO studentDTO) {
+		return studentService.createStudent(studentDTO);
 	}
 	
 	@GetMapping("/{studentId}")
-	public Student getStudentById(@PathVariable Integer studentId) {
+	public StudentDTO getStudentById(@PathVariable Integer studentId) {
 		return studentService.getStudentById(studentId);
 	}
 	
 	@GetMapping
-	public Iterable<Student> getStudents() {
+	public List<StudentDTO> getStudents() {
 		return studentService.getAllStudents();
 	}
 	
 	@PutMapping
-	public void updateStudent(@RequestBody Student student) {
-		studentService.updateStudent(student);
+	public void updateStudent(@Valid @RequestBody StudentDTO studentDTO) {
+		studentService.updateStudent(studentDTO);
 	}
 	
 	@DeleteMapping
@@ -56,12 +58,12 @@ public class StudentController {
 	}
 	
 	@GetMapping("/courses/{courseCode}")
-	public List<Student> getStudentsByCourse(@PathVariable String courseCode) {
+	public List<StudentDTO> getStudentsByCourse(@PathVariable String courseCode) {
 		return studentService.getStudentsByCourse(courseCode);
 	}
 	
 	@GetMapping("/{studentId}/classes/{courseCode}")
-	public AvailabilityInfo checkAvailability(@PathVariable Integer studentId, @PathVariable String courseCode) {
+	public AvailabilityInfoDTO checkAvailability(@PathVariable Integer studentId, @PathVariable String courseCode) {
 		return studentService.checkAvailability(studentId, courseCode);
 	}
 }

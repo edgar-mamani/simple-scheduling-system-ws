@@ -2,20 +2,20 @@ package com.truextend.scheduling.service;
 
 import java.util.List;
 
-import com.truextend.scheduling.entity.Course;
+import com.truextend.scheduling.dto.CourseDTO;
 
 public interface CourseService {
 
-	Course createCourse(Course course);
+	CourseDTO createCourse(CourseDTO courseDTO);
 	
-	Course getCourseByCode(String courseCode);
+	CourseDTO getCourseByCode(String courseCode);
 
-	Iterable<Course> getAllCourses();
+	List<CourseDTO> getAllCourses();
 
-	void updateCourse(Course course);
+	void updateCourse(CourseDTO courseDTO);
 
 	void deleteCourse(String courseCode);
 
-	List<Course> getCoursesByStudentId(Integer studentId);
+	List<CourseDTO> getCoursesByStudentId(Integer studentId);
 
 }

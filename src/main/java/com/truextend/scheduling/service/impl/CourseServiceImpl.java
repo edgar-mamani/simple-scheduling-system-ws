@@ -1,14 +1,17 @@
 package com.truextend.scheduling.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.truextend.scheduling.dto.CourseDTO;
 import com.truextend.scheduling.entity.Course;
 import com.truextend.scheduling.exception.EntityNotFoundException;
 import com.truextend.scheduling.repository.CourseRepository;
@@ -21,26 +24,35 @@ public class CourseServiceImpl implements CourseService {
 	private CourseRepository courseRepository;
 
 	@Override
-	public Course createCourse(Course course) {
-		return courseRepository.save(course);
+	public CourseDTO createCourse(CourseDTO courseDTO) {
+		ModelMapper modelMapper = new ModelMapper();
+		Course course = modelMapper.map(courseDTO, Course.class);
+		
+		courseRepository.save(course);
+		
+		return courseDTO;
 	}
 
 	@Cacheable(value = "courses", key = "#courseCode")
 	@Override
-	public Course getCourseByCode(String courseCode) {
+	public CourseDTO getCourseByCode(String courseCode) {
 		Optional<Course> optCourse = courseRepository.findById(courseCode);
 		
 		if (!optCourse.isPresent()) throw new EntityNotFoundException(Course.class, "classCode", courseCode);
 		
-		return optCourse.get();
+		ModelMapper modelMapper = new ModelMapper();
+		
+		return modelMapper.map(optCourse.get(), CourseDTO.class);
 	}
 
 	@CachePut(value = "courses", key = "#course.code")
 	@Override
-	public void updateCourse(Course course) {
-		getCourseByCode(course.getCode());
+	public void updateCourse(CourseDTO courseDTO) {
+		getCourseByCode(courseDTO.getCode());
 		
-		courseRepository.save(course);
+		ModelMapper modelMapper = new ModelMapper();
+		
+		courseRepository.save(modelMapper.map(courseDTO, Course.class));
 	}
 
 	@CacheEvict(value = "courses", key = "#courseCode")
@@ -52,12 +64,28 @@ public class CourseServiceImpl implements CourseService {
 	}
 	
 	@Override
-	public Iterable<Course> getAllCourses() {
-		return courseRepository.findAll();
+	public List<CourseDTO> getAllCourses() {
+		Iterable<Course> courses = courseRepository.findAll();
+		
+		ModelMapper modelMapper = new ModelMapper();
+		
+		List<CourseDTO> response = new ArrayList<>(0);
+		
+		courses.forEach(c -> response.add(modelMapper.map(c, CourseDTO.class)));
+		
+		return response;
 	}
 
 	@Override
-	public List<Course> getCoursesByStudentId(Integer studentId) {
-		return courseRepository.findCoursesByStudentId(studentId);
+	public List<CourseDTO> getCoursesByStudentId(Integer studentId) {
+		List<Course> courses = courseRepository.findCoursesByStudentId(studentId);
+		
+		ModelMapper modelMapper = new ModelMapper();
+		
+		List<CourseDTO> response = new ArrayList<>(0);
+		
+		courses.stream().forEach(c -> response.add(modelMapper.map(c, CourseDTO.class)));
+		
+		return response;
 	}
 }

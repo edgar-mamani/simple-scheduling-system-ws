@@ -2,23 +2,23 @@ package com.truextend.scheduling.service;
 
 import java.util.List;
 
-import com.truextend.scheduling.dto.AvailabilityInfo;
-import com.truextend.scheduling.entity.Student;
+import com.truextend.scheduling.dto.AvailabilityInfoDTO;
+import com.truextend.scheduling.dto.StudentDTO;
 
 public interface StudentService {
 
-	Student createStudent(Student student);
+	StudentDTO createStudent(StudentDTO student);
 
-	Student getStudentById(Integer studentId);
+	StudentDTO getStudentById(Integer studentId);
 
-	void updateStudent(Student student);
+	void updateStudent(StudentDTO student);
 
 	void deleteStudent(Integer studentId);
 
-	Iterable<Student> getAllStudents();
+	List<StudentDTO> getAllStudents();
 
-	List<Student> getStudentsByCourse(String courseCode);
+	List<StudentDTO> getStudentsByCourse(String courseCode);
 
-	AvailabilityInfo checkAvailability(Integer studentId, String courseCode);
+	AvailabilityInfoDTO checkAvailability(Integer studentId, String courseCode);
 
 }

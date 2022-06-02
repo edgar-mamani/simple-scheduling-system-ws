@@ -1,15 +1,18 @@
 package com.truextend.scheduling.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import com.truextend.scheduling.dto.AvailabilityInfo;
+import com.truextend.scheduling.dto.AvailabilityInfoDTO;
+import com.truextend.scheduling.dto.StudentDTO;
 import com.truextend.scheduling.entity.Enrollment;
 import com.truextend.scheduling.entity.Student;
 import com.truextend.scheduling.exception.EntityNotFoundException;
@@ -27,25 +30,35 @@ public class StudentServiceImpl implements StudentService {
 	private EnrollmentRepository enrollmentRepository;
 
 	@Override
-	public Student createStudent(Student student) {
-		return studentRepository.save(student);
+	public StudentDTO createStudent(StudentDTO studentDTO) {
+		ModelMapper modelMapper = new ModelMapper();
+		Student student = modelMapper.map(studentDTO, Student.class);
+		
+		student = studentRepository.save(student);
+		
+		return modelMapper.map(student, StudentDTO.class);
 	}
 
 	@Cacheable(value = "students", key = "#studentId")
 	@Override
-	public Student getStudentById(Integer studentId) {
+	public StudentDTO getStudentById(Integer studentId) {
 		Optional<Student> optStudent = studentRepository.findById(studentId);
 		
 		if (!optStudent.isPresent()) throw new EntityNotFoundException(Student.class, "studentId", studentId.toString());
 		
-		return optStudent.get();
+		ModelMapper modelMapper = new ModelMapper();
+		
+		return modelMapper.map(optStudent.get(), StudentDTO.class);
 	}
 
 	@CachePut(value = "students", key = "#student.id")
 	@Override
-	public void updateStudent(Student student) {
-		getStudentById(student.getId());
-		studentRepository.save(student);
+	public void updateStudent(StudentDTO studentDTO) {
+		getStudentById(studentDTO.getId());
+		
+		ModelMapper modelMapper = new ModelMapper();
+		
+		studentRepository.save(modelMapper.map(studentDTO, Student.class));
 	}
 
 	@CacheEvict(value = "students", key = "#studentId")
@@ -56,20 +69,36 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public Iterable<Student> getAllStudents() {
-		return studentRepository.findAll();
+	public List<StudentDTO> getAllStudents() {
+		Iterable<Student> students = studentRepository.findAll();
+		
+		ModelMapper modelMapper = new ModelMapper();
+		
+		List<StudentDTO> response = new ArrayList<>(0);
+		
+		students.forEach(s -> response.add(modelMapper.map(s, StudentDTO.class)));
+		
+		return response;
 	}
 
 	@Override
-	public List<Student> getStudentsByCourse(String courseCode) {
-		return studentRepository.findStudentsByCourse(courseCode);
+	public List<StudentDTO> getStudentsByCourse(String courseCode) {
+		List<Student> students = studentRepository.findStudentsByCourse(courseCode);
+		
+		ModelMapper modelMapper = new ModelMapper();
+		
+		List<StudentDTO> response = new ArrayList<>(0);
+		
+		students.stream().forEach(s -> response.add(modelMapper.map(s, StudentDTO.class)));
+		
+		return response;
 	}
 	
 	@Override
-	public AvailabilityInfo checkAvailability(Integer studentId, String courseCode) {
+	public AvailabilityInfoDTO checkAvailability(Integer studentId, String courseCode) {
 		Optional<Enrollment> result = enrollmentRepository.checkAvailabilityByStudentIdAndCourseCode(studentId, courseCode);
 		
-		AvailabilityInfo info = new AvailabilityInfo(studentId, courseCode);
+		AvailabilityInfoDTO info = new AvailabilityInfoDTO(studentId, courseCode);
 		info.setAvailability(result.isPresent());
 		
 		return info;

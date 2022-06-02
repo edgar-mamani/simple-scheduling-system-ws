@@ -2,15 +2,18 @@ package com.truextend.scheduling.dto;
 
 import java.util.Objects;
 
-public class AvailabilityInfo {
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(value = "AvailabilityInfo")
+public class AvailabilityInfoDTO {
 
 	private Integer studentId;
 	private String classCode;
 	private boolean availability;
 	
-	public AvailabilityInfo() {}
+	public AvailabilityInfoDTO() {}
 	
-	public AvailabilityInfo(Integer studentId, String classCode) {
+	public AvailabilityInfoDTO(Integer studentId, String classCode) {
 		this.studentId = studentId;
 		this.classCode = classCode;
 	}
@@ -52,7 +55,7 @@ public class AvailabilityInfo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AvailabilityInfo other = (AvailabilityInfo) obj;
+		AvailabilityInfoDTO other = (AvailabilityInfoDTO) obj;
 		return availability == other.availability && Objects.equals(classCode, other.classCode)
 				&& Objects.equals(studentId, other.studentId);
 	}
