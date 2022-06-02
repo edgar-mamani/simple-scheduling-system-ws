@@ -1,5 +1,8 @@
 package com.truextend.scheduling.dto;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(value = "Enrollment")
 public class EnrollmentDTO {
 	private Integer studentId;
 	private String courseCode;
