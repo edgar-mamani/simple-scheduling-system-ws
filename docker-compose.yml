@@ -1,25 +1,39 @@
-version: '3'
+version: '3.1'
 services:
-  scheduling-system-ws:
+  SchedulingSystemWS:
     image: scheduling-system-ws
+    container_name: SchedulingSystemWS
     build: .
     ports:
       - "8080:8080"
     restart: always
+    networks:
+      - SchedulingSystemNET
     depends_on:
-      - scheduling-system-db
+      SchedulingSystemDB:
+        condition: service_healthy
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://scheduling-system-db:5438/SCHEDULING_SYSTEM_DB
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://SchedulingSystemDB:5432/SCHEDULING_SYSTEM_DB
       - SPRING_DATASOURCE_USERNAME=truextend
       - SPRING_DATASOURCE_PASSWORD=truextend
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
-  scheduling-system-db:
+  SchedulingSystemDB:
     image: postgres:14.2-alpine3.15
-    container_name: scheduling-system-db
+    container_name: SchedulingSystemDB
     restart: always
+    networks:
+      - SchedulingSystemNET
     ports:
      - "5438:5432"
     environment:
      - POSTGRES_DB=SCHEDULING_SYSTEM_DB     
      - POSTGRES_USER=truextend
      - POSTGRES_PASSWORD=truextend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  SchedulingSystemNET:
