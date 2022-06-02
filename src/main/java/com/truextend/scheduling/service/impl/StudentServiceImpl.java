@@ -1,6 +1,7 @@
 package com.truextend.scheduling.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -8,7 +9,10 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.truextend.scheduling.dto.AvailabilityInfo;
+import com.truextend.scheduling.entity.Enrollment;
 import com.truextend.scheduling.entity.Student;
+import com.truextend.scheduling.repository.EnrollmentRepository;
 import com.truextend.scheduling.repository.StudentRepository;
 import com.truextend.scheduling.service.StudentService;
 
@@ -17,6 +21,9 @@ public class StudentServiceImpl implements StudentService {
 	
 	@Autowired
 	private StudentRepository studentRepository;
+	
+	@Autowired
+	private EnrollmentRepository enrollmentRepository;
 
 	@Override
 	public Student createStudent(Student student) {
@@ -49,6 +56,16 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public List<Student> getStudentsByCourse(String courseCode) {
 		return studentRepository.findStudentsByCourse(courseCode);
+	}
+	
+	@Override
+	public AvailabilityInfo checkAvailability(Integer studentId, String courseCode) {
+		Optional<Enrollment> result = enrollmentRepository.checkAvailabilityByStudentIdAndCourseCode(studentId, courseCode);
+		
+		AvailabilityInfo info = new AvailabilityInfo(studentId, courseCode);
+		info.setAvailability(result.isPresent());
+		
+		return info;
 	}
 	
 }

@@ -2,6 +2,7 @@ package com.truextend.scheduling.service;
 
 import java.util.List;
 
+import com.truextend.scheduling.dto.AvailabilityInfo;
 import com.truextend.scheduling.entity.Student;
 
 public interface StudentService {
@@ -17,5 +18,7 @@ public interface StudentService {
 	Iterable<Student> getAllStudents();
 
 	List<Student> getStudentsByCourse(String courseCode);
+
+	AvailabilityInfo checkAvailability(Integer studentId, String courseCode);
 
 }

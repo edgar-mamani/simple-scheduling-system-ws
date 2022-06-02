@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.truextend.scheduling.dto.AvailabilityInfo;
 import com.truextend.scheduling.entity.Student;
 import com.truextend.scheduling.service.StudentService;
 
@@ -34,8 +35,8 @@ public class StudentController {
 		return studentService.createStudent(student);
 	}
 	
-	@GetMapping("/{id}")
-	public Student getStudentById(@PathVariable("id") Integer studentId) {
+	@GetMapping("/{studentId}")
+	public Student getStudentById(@PathVariable Integer studentId) {
 		return studentService.getStudentById(studentId);
 	}
 	
@@ -57,5 +58,10 @@ public class StudentController {
 	@GetMapping("/courses/{courseCode}")
 	public List<Student> getStudentsByCourse(@PathVariable String courseCode) {
 		return studentService.getStudentsByCourse(courseCode);
+	}
+	
+	@GetMapping("/{studentId}/classes/{courseCode}")
+	public AvailabilityInfo checkAvailability(@PathVariable Integer studentId, @PathVariable String courseCode) {
+		return studentService.checkAvailability(studentId, courseCode);
 	}
 }
